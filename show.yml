@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name "Show command"
+  - ios_command:
+     commands:
+      - show version
