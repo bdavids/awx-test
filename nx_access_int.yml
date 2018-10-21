@@ -1,0 +1,32 @@
+---
+- hosts: all
+  connection: local
+
+  tasks:
+  - name: "Add DESCRIPTION on access interface"
+    nxos_interface:
+     aggregate:
+      - {name: "{{ item.name }}", description: "{{ item.desc }}"}
+#    state: "present"
+    with_items:
+     - "{{ access_interfaces }}"
+
+  - name: "Add VLAN on access interface"
+    nxos_l2_interface:
+     aggregate:
+      - {name: "{{ item.name }}", access_vlan: "{{ item.vlan }}"}
+     mode: "access"
+     state: "present"
+#     state: "absent"
+#     state: unconfigured
+    with_items:
+     - "{{ access_interfaces }}"
+
+  - name: "Configure port type edge"
+    nxos_config:
+     lines:
+      - "spanning-tree port type edge"
+     parents:
+      - "interface {{ item.name }}"
+    with_items:
+     - "{{ access_interfaces }}"

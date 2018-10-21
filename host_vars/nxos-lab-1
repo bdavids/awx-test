@@ -1,0 +1,5 @@
+---
+access_interfaces:
+ - name: "Ethernet1/10"
+   desc: "test"
+   vlan: "1"
