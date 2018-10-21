@@ -1,9 +1,6 @@
 ---
 - name: "Backup configuration from managed hosts"
   hosts: all
-  gather_facts: no
-  connection: local
-
 
   tasks:
   - import_tasks: tasks/get_nexus_cfg_show_cmd.yml

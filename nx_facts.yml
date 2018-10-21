@@ -1,8 +1,6 @@
 ---
 - name: "Get some facts from the device"
   hosts: all
-  gather_facts: no
-  connection: local
 
   tasks:
   - name: "Retrieve facts"
