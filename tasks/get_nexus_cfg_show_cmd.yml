@@ -1,0 +1,10 @@
+#
+# Get configuration from managed hosts using "show running" command
+#
+---
+- name: "Get device cfg"
+  nxos_command:
+   commands:
+    - "show run | ex !Time"
+  ignore_errors: yes
+  register: run_cfg

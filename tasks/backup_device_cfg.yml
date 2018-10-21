@@ -1,0 +1,10 @@
+#
+# Backup configuration from managed hosts 
+#
+---
+- name: "Save cfg to local file : "
+  copy:
+   content: "{{ run_cfg.stdout[0] }}"
+   dest: "outputs/{{ inventory_hostname }}.cfg"
+  register: save_cfg
+  delegate_to: localhost
