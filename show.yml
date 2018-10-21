@@ -4,7 +4,11 @@
   connection: local
 
   tasks:
-  - name "Show command"
-  - ios_command:
+  - name: "Show command"
+    ios_command:
      commands:
       - show version
+    register: out
+
+  - debug:
+     msg: "{{ out.stdout_lines }}"
