@@ -1,0 +1,14 @@
+---
+- name: "Get some facts from the device"
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: "Retrieve facts"
+    nxos_facts:
+     gather_subset: "all"
+    register: "my_data"
+
+  - name: "Store Data in File"
+    template: "src=templates/nx_facts.j2 dest=outputs/{{ inventory_hostname }}_data.json"
