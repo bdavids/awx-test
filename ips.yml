@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: "Get IPs"
+    ios_command:
+     commands:
+      - sib
+    register: ips
+
+  - debug:
+     msg: "{{ ips.stdout_lines }}"
