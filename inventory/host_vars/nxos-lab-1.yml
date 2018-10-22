@@ -1,0 +1,8 @@
+loopback_interfaces:
+ - name: "loopback0"
+   desc: "nxos-lab-1 bgp"
+   ip:   "10.0.0.1"
+ 
+ - name: "loopback1"
+   desc: "nxos-lab-1 nve"
+   ip:   "10.0.2.1"
