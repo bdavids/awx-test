@@ -6,3 +6,8 @@ loopback_interfaces:
  - name: "loopback1"
    desc: "nxos-lab-1 nve"
    ip:   "10.0.2.1"
+
+access_interfaces:
+ - name: "Ethernet1/10"
+   desc: "test"
+   vlan: "1"
