@@ -1,0 +1,31 @@
+---
+- name: " Create inventory file with all online hosts"
+  hosts: localhost
+  
+  tasks:
+  - name: "Define hosts from subnet"
+    command: |
+     bash -c "ipcalc {{ item.value.subnet }} 24 | grep HostMin | awk '{ print $2 }' | uniq >> {{ grp }}_all"
+    with_dict: "{{ locations }}"
+    when: item.key is search grp
+
+  - name: "Check online hosts"
+    command: |
+     bash -c "fping -a -r 0 -f {{ grp }}_all > {{ grp }}_online"
+    register: fping  
+    failed_when: fping.rc != 1 and fping.rc != 0
+
+  - name: "Sort hosts by IPs"
+    command: |
+     bash -c "sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n {{ grp }}_online > {{ grp }}_online_sort"
+
+  - name: "Copy sort hosts"
+    copy:
+     src: "{{ grp }}_online_sort"
+     dest: "{{ grp }}"
+
+  - name: "Add string at the beginning"
+    lineinfile:
+     dest: "{{ grp }}"
+     insertbefore: BOF
+     line: '[{{ grp }}]'
