@@ -5,6 +5,6 @@
 - name: "Save cfg to local file : "
   copy:
    content: "{{ run_cfg.stdout[0] }}"
-   dest: "outputs/{{ inventory_hostname }}.cfg"
+   dest: "{{ cfg_dir }}/{{ inventory_hostname }}.cfg"
   register: save_cfg
   delegate_to: localhost
