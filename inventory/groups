@@ -1,6 +1,10 @@
-[routers:child]
+[routers:children]
 rslo
 raut
+
+[raut]
+
+[rslo]
 
 [labnxos]
 nxos-lab-1
