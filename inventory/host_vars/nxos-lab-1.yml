@@ -1,3 +1,4 @@
+---
 loopback_interfaces:
  - name: "loopback0"
    desc: "nxos-lab-1 bgp"

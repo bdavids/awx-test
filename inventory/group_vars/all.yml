@@ -1,3 +1,4 @@
+---
 locations:
  rslo1:
   subnet: 10.2.0.0/15
