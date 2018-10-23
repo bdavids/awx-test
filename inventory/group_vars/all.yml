@@ -1,0 +1,7 @@
+locations:
+ rslo1:
+  subnet: 10.2.0.0/15
+ rslo2:
+  subnet: 10.4.0.0/15
+ raut1:
+  subnet: 10.6.0.0/15
