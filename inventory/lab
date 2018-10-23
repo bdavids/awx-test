@@ -1,3 +1,7 @@
+[routers:child]
+rslo
+raut
+
 [labnxos]
 nxos-lab-1
 nxos-lab-2
