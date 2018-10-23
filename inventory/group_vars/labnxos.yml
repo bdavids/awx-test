@@ -1,0 +1,2 @@
+backup_cfg_dir: '{{ cfg_dir }}/{{ group_names[0] }}'
+backup_cfg_file: '{{ backup_cfg_dir }}/{{ inventory_hostname }}.cfg'
