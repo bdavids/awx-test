@@ -2,13 +2,8 @@
 # Backup configuration from managed hosts 
 #
 ---
-- name: "Create backup directory : {{ backup_cfg_dir }}"
-  file:
-   path:  "{{ backup_cfg_dir }}"
-   state: directory
-  run_once: true
-  changed_when: no # Don't report changes
-  delegate_to: localhost
+- include_tasks: tasks/
+  with_items: "{{ bck_cfg_dir }}"
 
 - name: "Save cfg to local file : "
   copy:

@@ -1,0 +1,11 @@
+#
+# Create backup directory
+#
+---
+- name: "Create dir : {{ item }}"
+  file:
+   path:  "{{ item }}"
+   state: directory
+  run_once: true
+  changed_when: no # Don't report changes
+  delegate_to: localhost
