@@ -2,9 +2,9 @@
 # Create backup directory
 #
 ---
-- name: "Create dir : {{ item }}"
+- name: "Create dir : {{ bck_cfg_dir }}"
   file:
-   path:  "{{ item }}"
+   path:  "{{ bck_cfg_dir }}"
    state: directory
   run_once: true
   changed_when: no # Don't report changes
