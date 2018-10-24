@@ -2,7 +2,7 @@
 # Backup configuration from managed hosts 
 #
 ---
-- include_tasks: tasks/
+- include_tasks: tasks/create_dir.yml
   with_items: "{{ bck_cfg_dir }}"
 
 - name: "Save cfg to local file : "
