@@ -4,7 +4,7 @@
 
   tasks:
   - name: "Retrieve facts"
-    nxos_facts:
+    ios_facts:
      gather_subset: "all"
     register: "my_data"
 
