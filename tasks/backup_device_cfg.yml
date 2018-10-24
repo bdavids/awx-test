@@ -2,6 +2,14 @@
 # Backup configuration from managed hosts 
 #
 ---
+- name: "Create backup directory : {{ backup_cfg_dir }}"
+  file:
+   path:  "{{ backup_cfg_dir }}"
+   state: directory
+  run_once: true
+  changed_when: no # Don't report changes
+  delegate_to: localhost
+
 - name: "Save cfg to local file : "
   copy:
    content: "{{ run_cfg.stdout[0] }}"
