@@ -3,9 +3,6 @@
   hosts: all
 
   tasks:
-  - import_tasks: tasks/create_dir.yml
-    with_items: "{{ cfg_dir }}"
-
   - import_tasks: tasks/get_nxos_cfg_show_cmd.yml
 
   - import_tasks: tasks/backup_device_cfg.yml
