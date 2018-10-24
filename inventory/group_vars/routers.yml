@@ -1,0 +1,3 @@
+---
+bck_cfg_dir: '{{ cfg_dir }}/{{ group_names[1] }}/{{ group_names[0] }}'
+bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'

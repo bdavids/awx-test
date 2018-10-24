@@ -1,0 +1,10 @@
+#
+# Get configuration from managed hosts using "show running" command
+#
+---
+- name: "Get device cfg"
+  ios_command:
+   commands:
+    - "show run | ex (Building conf|Current conf|Last conf|NVRAM conf|ntp clock)"
+  ignore_errors: yes
+  register: run_cfg
