@@ -1,0 +1,7 @@
+---
+- name: "Create directory"
+  local_action: file path={{ cfg_dir }} state=directory
+  run_once: true
+  check_mode: no
+  delegate_to: localhost
+  changed_when: no # Don't report changes
