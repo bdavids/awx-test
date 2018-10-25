@@ -1,4 +1,6 @@
 ---
+bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'
+
 locations:
  rslo1:
   subnet: 10.2.0.0/15
