@@ -1,9 +1,8 @@
 [routers:children]
-rslo
 raut
+rslo
 
 [raut]
-
 [rslo]
 
 [labnxos]
