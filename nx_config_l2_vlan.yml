@@ -6,4 +6,5 @@
     nxos_vlan:
      vlan_id: "{{ item.id }}"
      name: "{{ item.name }}"
+     state: "{{ stat }}"
     with_items: "{{ vlans }}" 
