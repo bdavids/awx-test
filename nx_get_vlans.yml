@@ -1,0 +1,24 @@
+#
+# Get VLANS from managed hosts using "show vlan" command
+#
+---
+- hosts: all
+ 
+  tasks:
+  - name: "Get vlans from NXOS"
+    ntc_show_command:
+     connection: "ssh"
+     platform: "cisco_nxos"
+     command: "show vlan"
+     template_dir: "library/ntc-ansible/ntc-templates/templates/" # Specifies where to search templates
+     host: "{{ inventory_hostname }}"
+     username: "{{ ansible_ssh_user }}"
+     password: "{{ ansible_ssh_pass }}"
+    ignore_errors: yes
+    register: vlans
+
+  - name: "Create file with vlans: outputs/{{ inventory_hostname }}_vlans.yml"
+    template:
+     src: "templates/nx_get_vlans.j2"
+     dest: "outputs/{{ inventory_hostname }}_vlans.yml"
+    when: not (vlans is skipped or vlans is failed)
