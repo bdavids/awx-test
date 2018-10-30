@@ -1,8 +1,8 @@
 [routers:children]
-raut
-rslo
+rgrp1
+rgrp2
 
-[raut]
-[rslo]
+[rgrp1]
+[rgrp2]
 
 [labnxos]

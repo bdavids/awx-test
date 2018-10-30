@@ -22,3 +22,7 @@
      src: "templates/nx_get_vlans.j2"
      dest: "outputs/{{ inventory_hostname }}_vlans.yml"
     when: not (vlans is skipped or vlans is failed)
+
+  - name: "Remove empty lines"
+    command: |
+     bash -c "sed -i '/^\s*$/d' outputs/{{ inventory_hostname }}_vlans.yml"
