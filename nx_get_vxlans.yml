@@ -1,0 +1,19 @@
+---
+- hosts: all
+
+  tasks:
+  - nxos_command:
+     commands:
+      - "show vxlan | ex Vl|="
+    register: vxlans
+    ignore_errors: yes
+
+  - name: "Create file with vlans: outputs/{{ inventory_hostname }}_vlans.yml"
+    template:
+     src: "templates/nx_get_vxlans.j2"
+     dest: "outputs/{{ inventory_hostname }}_vxlans.yml"
+    when: not (vxlans is skipped or vxlans is failed)
+
+#  - name: "Remove empty lines"
+#    command: |
+#     bash -c "sed -i '/^\s*$/d' outputs/{{ inventory_hostname }}_vxlans.yml"

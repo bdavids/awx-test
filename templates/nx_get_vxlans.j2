@@ -1,0 +1,3 @@
+{% for vxlan in vxlans.stdout_lines[0] %}
+- { id: "{{ vxlan.split()[0] }}", vni: "{{ vxlan.split()[1] }}" }
+{% endfor %}
