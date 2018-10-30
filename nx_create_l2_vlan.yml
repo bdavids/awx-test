@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+  - name: "CREATE THE VLAN"
+    nxos_vlan:
+     vlan_id: "{{ item.id }}"
+     name: "{{ item.name }}"
+    with_items: "{{ vlans }}" 
