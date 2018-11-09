@@ -1,11 +1,11 @@
 ---
 bck_cfg_dir: '{{ cfg_dir }}/{{ group_names[0] }}'
 
-asn:
+asn: ''
 
 vrf: ''
 
-dhcp_srv_1: 
-dhcp_srv_2: 
+dhcp_srv_1: ''
+dhcp_srv_2: ''
 dhcp_relay_src_addr: ''
 
