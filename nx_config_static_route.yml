@@ -1,0 +1,19 @@
+---
+- name: "Config static routes on managed host"
+  hosts: all
+
+  tasks:
+  - name: "Create cfg file : outputs/{{ inventory_hostname }}_static_routes.cfg"
+    template:
+     src: "templates/nx_set_static_routes.j2"
+     dest: "outputs/{{ inventory_hostname }}_static_routes.cfg"
+
+  - name: "Print to screen"
+    command: |
+     bash -c "cat outputs/{{ inventory_hostname }}_static_routes.cfg"
+    changed_when: no
+
+  - name: "Deploy cfg to managed host"
+    ios_config:
+     src: "outputs/{{ inventory_hostname }}_static_routes.cfg"
+    ignore_errors: yes

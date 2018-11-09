@@ -1,0 +1,19 @@
+vrf context {{ vrf }}
+{% for route in static_routes  %}
+{%  for name,next_hop in next_hops|dictsort %}
+{%   if route.nh == name %}
+{%    if stat == 'present' %}
+ ip route {{ route.net }} {{ next_hop.ip }} track {{ next_hop.track }} name {{ name }}
+{%    else %}
+ no ip route {{ route.net }} {{ next_hop.ip }} track {{ next_hop.track }} name {{ name }}
+{%    endif %}
+{%   endif %}
+{%  endfor %}
+{%  if route.nh == 'NEXT_HOP_IP' and route.nh_ip is defined %}
+{%   if stat == 'present' %}
+ ip route {{ route.net }} {{ route.nh_ip }}
+{%   else %}
+ no ip route {{ route.net }} {{ route.nh_ip }}
+{%   endif %}
+{%  endif %}
+{% endfor %}

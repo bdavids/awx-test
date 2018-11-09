@@ -1,0 +1,101 @@
+---
+- hosts: all
+
+  tasks:
+  - name: "CREATE THE VLAN"
+    nxos_vlan:
+     vlan_id: "{{ item.id }}"
+     name: "{{ item.name }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}" 
+
+  - name: "ASSOCIATE THE VLAN TO VNI"
+    nxos_vlan:
+     vlan_id: "{{ item.id }}"
+     mapped_vni: "{{ item.vni }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.vni is defined
+
+  - name: "CONFIGURE VNI IN VTEP"
+    nxos_vxlan_vtep_vni:
+     interface: nve1
+     vni: "{{ item.vni }}"
+     ingress_replication: bgp
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.vni is defined
+
+  - name: "EVPN CONFIG"
+    nxos_evpn_vni:
+     vni: "{{ item.vni }}"
+     route_distinguisher: auto
+     route_target_both: "{{ asn }}:{{ item.vni }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.vni is defined
+
+  - name: "Create L3 interface"
+    nxos_interface:
+     name: "Vlan{{ item.id }}"
+     description: "{{ item.name }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined
+
+  - name: "Ensure VRF exists on interface"
+    nxos_vrf_interface:
+     vrf: "DATA"
+     interface: "Vlan{{ item.id }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined and stat is search ("present")
+
+  - name: "Set interface IPv4 address"
+    nxos_l3_interface:
+     name: "Vlan{{ item.id }}"
+     ipv4: "{{ item.ip }}"
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined and stat is search ("present")
+
+  - name: "Set interface anycast gw"
+    nxos_interface:
+     name: "Vlan{{ item.id }}"
+     fabric_forwarding_anycast_gateway: "{{ item.anycast }}" 
+     state: "{{ stat }}"
+    with_items: "{{ vlans }}"
+    when: item.anycast is defined and stat is search ("present")
+
+  - name: "Set interface relay address"
+    nxos_config:
+     lines:
+      - ip dhcp relay address 10.15.4.3 
+      - ip dhcp relay address 10.15.5.3 
+      - ip dhcp relay source-interface loopback100
+     parents: "interface Vlan{{ item.id }}"
+     replace: "block"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined and item.dhcp is defined and stat is search ("present")
+
+  - name: "Add net in BGP"
+    nxos_config:
+     lines:
+      - "address-family ipv4 unicast"
+      - "network {{ item.ip| ipaddr('subnet') }}"
+     parents: "vrf DATA"
+     before: "router bgp {{ asn }}"
+     replace: "block"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined and stat is search ("present")
+
+  - name: "Remove net from BGP"
+    nxos_config:
+     lines:
+      - "address-family ipv4 unicast"
+      - "no network {{ item.ip| ipaddr('subnet') }}"
+     parents: "vrf DATA"
+     before: "router bgp {{ asn }}"
+     replace: "block"
+    with_items: "{{ vlans }}"
+    when: item.ip is defined and stat is search ("absent")
