@@ -1,6 +1,7 @@
 ---
-bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'
 out_dir: 'outputs'
+
+bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'
 
 locations:
  - name: ''
