@@ -1,0 +1,47 @@
+---
+- name: "Get info about vlans from managed hosts"
+  hosts: all
+
+  vars_files:
+  - ssh.yml
+
+  tasks:
+  - name: "Get vlans from NXOS"
+    ntc_show_command:
+     connection: "ssh"
+     platform: "cisco_nxos"
+     command: "show vlan"
+     template_dir: "library/ntc-ansible/ntc-templates/templates/" # Specifies where to search templates
+     host: "{{ inventory_hostname }}"
+     username: "{{ ansible_ssh_user }}"
+     password: "{{ ansible_ssh_pass }}"
+    register: vlans
+
+  - name: "Get vxlans from NXOS"
+    nxos_command:
+     commands:
+      - "show vxlan | ex Vl|="
+    register: vxlans
+
+  - name: "Get l3 interfaces from NXOS"
+    nxos_facts:
+     gather_subset: "legacy,interfaces"
+
+  - name: "Get extra info about l3 interfaces from NXOS"
+    nxos_command:
+     commands:
+      - "sh run int {{ item }} | include ^interface|fabric|relay.address"
+    register: svi_info
+    with_items: "{{ ansible_facts.interfaces_list }}"
+    when: item is search ("Vlan")
+    ignore_errors: yes
+
+  - name: "Create file with vlans: {{ out_dir }}/{{ inventory_hostname }}_vlans.yml"
+    template:
+     src:  "templates/nx_get_vlans.j2"
+     dest: "{{ out_dir }}/{{ inventory_hostname }}_vlans.yml"
+
+  - name: "Print to screen"
+    command: |
+     bash -c "cat {{ out_dir }}/{{ inventory_hostname }}_vlans.yml"
+    changed_when: no
