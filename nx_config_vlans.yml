@@ -45,7 +45,7 @@
 
   - name: "Ensure VRF exists on interface"
     nxos_vrf_interface:
-     vrf: "DATA"
+     vrf: "{{ vrf }}"
      interface: "Vlan{{ item.id }}"
      state: "{{ stat }}"
     with_items: "{{ vlans }}"
@@ -83,7 +83,7 @@
      lines:
       - "address-family ipv4 unicast"
       - "network {{ item.ip| ipaddr('subnet') }}"
-     parents: "vrf DATA"
+     parents: "vrf {{ vrf }}"
      before: "router bgp {{ asn }}"
      replace: "block"
     with_items: "{{ vlans }}"
@@ -94,7 +94,7 @@
      lines:
       - "address-family ipv4 unicast"
       - "no network {{ item.ip| ipaddr('subnet') }}"
-     parents: "vrf DATA"
+     parents: "vrf {{ vrf }}"
      before: "router bgp {{ asn }}"
      replace: "block"
     with_items: "{{ vlans }}"
