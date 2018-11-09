@@ -70,9 +70,9 @@
   - name: "Set interface relay address"
     nxos_config:
      lines:
-      - ip dhcp relay address 10.15.4.3 
-      - ip dhcp relay address 10.15.5.3 
-      - ip dhcp relay source-interface loopback100
+      - ip dhcp relay address "{{ dhcp_srv_1 }}"
+      - ip dhcp relay address "{{ dhcp_srv_2 }}"
+      - ip dhcp relay source-interface "{{ dhcp_relay_src_addr }}"
      parents: "interface Vlan{{ item.id }}"
      replace: "block"
     with_items: "{{ vlans }}"
