@@ -6,7 +6,6 @@
   - name: "Retrieve facts"
     ios_facts:
      gather_subset: "all"
-    register: "my_data"
 
   - name: "Store Data in File"
     template: "src=templates/facts.j2 dest=outputs/{{ inventory_hostname }}_data.json"

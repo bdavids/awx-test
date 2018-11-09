@@ -1,7 +1,0 @@
-vlans:
-{% for vl in vlans.response  %}
-{%  if vl.status == 'active' %} 
- - { id: "{{ vl.vlan_id }}", name: "{{ vl.name }}" }
-{%  else %}
-{%  endif %}
-{% endfor %}

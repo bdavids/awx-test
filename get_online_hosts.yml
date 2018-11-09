@@ -1,13 +1,15 @@
 ---
-- name: " Create inventory file with all online hosts"
+- name: "Create inventory file with all online hosts"
   hosts: localhost
   
   tasks:
   - name: "Define hosts from subnet"
     command: |
-     bash -c "ipcalc {{ item.value.subnet }} 24 | grep HostMin | awk '{ print $2 }' | uniq >> {{ grp }}_all"
-    with_dict: "{{ locations }}"
-    when: item.key is search grp
+     bash -c "ipcalc {{ item.1 }} 24 | grep HostMin | awk '{ print $2 }' | uniq >> {{ grp }}_all"
+    with_subelements:
+     - "{{ locations }}"
+     - "subnets"
+    when: item.0.name == grp
 
   - name: "Check online hosts"
     command: |
