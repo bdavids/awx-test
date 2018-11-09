@@ -1,0 +1,18 @@
+---
+- name: "Get some facts from the device"
+  hosts: all
+
+  vars_files:
+  - ssh.yml
+
+  tasks:
+  - name: "Get facts from device"
+    napalm_get_facts:
+     hostname: "{{ inventory_hostname }}"
+     username: "{{ usr }}"    
+     password: "{{ pwd }}"
+     dev_os: "{{ dev_os }}"
+     filter: 'facts'
+
+  - name: "Store Data in File"
+    template: "src=templates/napalm_facts.j2 dest=outputs/{{ inventory_hostname }}_napalm_data.json"
