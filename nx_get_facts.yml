@@ -8,4 +8,4 @@
      gather_subset: "all"
 
   - name: "Store Data in File"
-    template: "src=templates/facts.j2 dest=outputs/{{ inventory_hostname }}_data.json"
+    template: "src=templates/ios_facts.j2 dest=outputs/{{ inventory_hostname }}_nxos_data.json"
