@@ -1,0 +1,7 @@
+---
+- name: "Checking PING reachability"
+  command: /bin/ping -q -c 3 -A {{ inventory_hostname }}
+  ignore_errors: yes
+  register: "ping_result"
+  delegate_to: localhost
+  changed_when: no # Don't report changes

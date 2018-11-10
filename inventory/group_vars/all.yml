@@ -3,6 +3,7 @@ out_dir: 'outputs'
 tmp_dir: '/tmp'
 
 bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'
+models_file: '{{ out_dir }}/{{ group_names[1] }}__models.txt'
 
 locations:
  - name: ''

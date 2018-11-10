@@ -1,0 +1,39 @@
+---
+- name: "Get model of managed hosts"
+  hosts: all
+
+  serial: 1
+
+  vars_files:
+  - ssh.yml
+
+  tasks:
+  - import_tasks: tasks/check_reachability.yml
+
+  - import_tasks: tasks/napalm_get_ios_facts.yml
+
+  - name: 'Write data to file : {{ models_file }}'
+    lineinfile:
+     dest: '{{ models_file }}'
+     line: "IP | HOSTNAME | MODEL | SERIAL | OS"
+     create: 'yes'
+     state: 'present'
+    ignore_errors: True
+
+  - name: 'Write data to file : {{ models_file }}'
+    lineinfile:
+     dest: '{{ models_file }}'
+     line: "{{ inventory_hostname }} | {{ napalm_hostname }} | {{ napalm_model }} | {{ napalm_serial_number }} | {{ napalm_os_version }}"
+     create: 'yes'
+     state: 'present'
+    ignore_errors: True
+    when: not facts_result is skipped
+
+  - name: 'Write data to file : {{ models_file }}'
+    lineinfile:
+     dest: '{{ models_file }}'
+     line: "{{ inventory_hostname }} | Can't get data "
+     create: 'yes'
+     state: 'present'
+    ignore_errors: True
+    when: not facts_result is succeeded

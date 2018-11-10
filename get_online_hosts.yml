@@ -31,10 +31,10 @@
   - name: "Copy sort hosts into inventory"
     copy:
      src: "{{ tmp_dir }}/{{ grp }}_online_sort"
-     dest: "inventorys/routers/{{ grp }}"
+     dest: "inventory/routers/{{ grp }}"
 
-  - name: "Add string at the beginning of the inventory: inventorys/routers/{{ grp }}"
+  - name: "Add string at the beginning of the inventory: inventory/routers/{{ grp }}"
     lineinfile:
-     dest: "inventorys/routers/{{ grp }}"
+     dest: "inventory/routers/{{ grp }}"
      insertbefore: BOF
      line: '[{{ grp }}]'

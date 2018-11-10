@@ -1,0 +1,10 @@
+- name: "Get facts from device"
+  napalm_get_facts:
+   hostname: "{{ inventory_hostname }}"
+   username: "{{ usr }}"
+   password: "{{ pwd }}"
+   dev_os: "{{ dev_os }}"
+   filter: 'facts'
+  register: facts_result
+  ignore_errors: True
+  when: not (ssh_result is skipped or ssh_result is failed)

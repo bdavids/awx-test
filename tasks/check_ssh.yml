@@ -1,0 +1,8 @@
+---
+- name: "Checking SSH reachability"
+  wait_for: host={{ inventory_hostname }} port=22  timeout=5
+  ignore_errors: yes
+  register: "ssh_result"
+  changed_when: no # Don't report changes
+  delegate_to: localhost
+  when: ping_result is succeeded

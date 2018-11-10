@@ -1,0 +1,5 @@
+---
+- import_tasks: tasks/check_ping.yml
+
+- import_tasks: tasks/check_ssh.yml
+  when: ping_result is succeeded
