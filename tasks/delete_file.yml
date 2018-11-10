@@ -1,0 +1,10 @@
+#
+# Delete file 
+#
+---
+- name: "Delete file : {{ item }}"
+  local_action: file path={{ item }} state=absent
+  run_once: true
+  delegate_to: localhost
+  check_mode: no
+  changed_when: no # Don't report changes

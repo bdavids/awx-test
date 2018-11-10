@@ -3,9 +3,16 @@
   hosts: localhost
   
   tasks:
+  - include_tasks: tasks/delete_file.yml
+    with_items: 
+     - "inventorys/routers/{{ grp }}"
+     - "{{ tmp_dir }}/{{ grp }}_all"
+     - "{{ tmp_dir }}/{{ grp }}_online"
+     - "{{ tmp_dir }}/{{ grp }}_online_sort"
+
   - name: "Define hosts from subnet"
     command: |
-     bash -c "ipcalc {{ item.1 }} 24 | grep HostMin | awk '{ print $2 }' | uniq >> {{ grp }}_all"
+     bash -c "ipcalc {{ item.1 }} 24 | grep HostMin | awk '{ print $2 }' | uniq >> {{ tmp_dir }}/{{ grp }}_all"
     with_subelements:
      - "{{ locations }}"
      - "subnets"
@@ -13,21 +20,21 @@
 
   - name: "Check online hosts"
     command: |
-     bash -c "fping -a -r 0 -f {{ grp }}_all > {{ grp }}_online"
+     bash -c "fping -a -r 0 -f {{ tmp_dir }}/{{ grp }}_all > {{ tmp_dir }}/{{ grp }}_online"
     register: fping  
     failed_when: fping.rc != 1 and fping.rc != 0
 
   - name: "Sort hosts by IPs"
     command: |
-     bash -c "sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n {{ grp }}_online > {{ grp }}_online_sort"
+     bash -c "sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n {{ tmp_dir }}/{{ grp }}_online > {{ tmp_dir }}/{{ grp }}_online_sort"
 
-  - name: "Copy sort hosts"
+  - name: "Copy sort hosts into inventory"
     copy:
-     src: "{{ grp }}_online_sort"
-     dest: "{{ grp }}"
+     src: "{{ tmp_dir }}/{{ grp }}_online_sort"
+     dest: "inventorys/routers/{{ grp }}"
 
-  - name: "Add string at the beginning"
+  - name: "Add string at the beginning of the inventory: inventorys/routers/{{ grp }}"
     lineinfile:
-     dest: "{{ grp }}"
+     dest: "inventorys/routers/{{ grp }}"
      insertbefore: BOF
      line: '[{{ grp }}]'

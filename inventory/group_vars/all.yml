@@ -1,5 +1,6 @@
 ---
 out_dir: 'outputs'
+tmp_dir: '/tmp'
 
 bck_cfg_file: '{{ bck_cfg_dir }}/{{ inventory_hostname }}.cfg'
 
